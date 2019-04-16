@@ -72,6 +72,11 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #else
     dispatch_once(&once, ^{ sharedView = [[self alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; });
 #endif
+    CGRect rect = [[[UIApplication sharedApplication] delegate] window].bounds;
+    if (rect.size.width == 0) {
+        rect = [UIScreen mainScreen].bounds;
+    }
+    sharedView.frame = rect;
     return sharedView;
 }
 
@@ -635,7 +640,12 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
     double animationDuration = 0.0;
 
 #if !defined(SV_APP_EXTENSIONS) && TARGET_OS_IOS
-    self.frame = [[[UIApplication sharedApplication] delegate] window].bounds;
+    CGRect rect = [[[UIApplication sharedApplication] delegate] window].bounds;
+    if (rect.size.width == 0) {
+        rect = [UIScreen mainScreen].bounds;
+    }
+    self.frame = rect;//[[[UIApplication sharedApplication] delegate] window].bounds;
+//     self.frame = [[[UIApplication sharedApplication] delegate] window].bounds;
     UIInterfaceOrientation orientation = UIApplication.sharedApplication.statusBarOrientation;
 #elif !defined(SV_APP_EXTENSIONS) && !TARGET_OS_IOS
     self.frame= [UIApplication sharedApplication].keyWindow.bounds;
@@ -1199,7 +1209,10 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #else
     _controlView.frame = [UIScreen mainScreen].bounds;
 #endif
-    
+    CGRect rect = [[[UIApplication sharedApplication] delegate] window].bounds;
+    if (rect.size.width == 0) {
+        rect = [UIScreen mainScreen].bounds;
+    }
     return _controlView;
 }
 
